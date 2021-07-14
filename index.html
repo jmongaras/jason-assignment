@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>Kvothe's Books</title>
+      <!-- SEO Meta
+         ================================================== -->
+      <meta name="description" content="">
+      <meta name="keywords" content="">
+      <meta name="distribution" content="global">
+      <meta name="robots" content="ALL">
+      <meta name="Language" content="en-us">
+      <!-- Mobile Specific Metas
+         ================================================== -->
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+      <!-- CSS
+         ================================================== -->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <!-- JS
+         ================================================== -->
+      <script type="text/javascript" src="js/custom.js"></script>
+      <script type="text/javascript" src="js/jquery.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script>
+         $(document).ready(function() {
+             $("button").click(function (e) {
+
+				
+
+                callbooks(e);
+             });
+         });
+		const callbooks = (e) => {
+				e.preventDefault();
+                 let img = '';
+                 let html = '';
+                 let author = '';
+                 let search = $("#books").val();
+				 const url = "https://www.googleapis.com/books/v1/volumes?q=" + search
+                 $.ajax({
+                     type: "GET",
+                     url: url
+					}).done(function(result) {
+                     //success: function (result) {
+                         $("#result").html("");
+							if(result.items){
+							 for(i=0; i < result.items.length; i++) {
+								   let data = '<div class="col-md-4">' +
+									  '<div class="skeleton-card">' +
+									  '<div class="book-thumb">' +
+										'<img src='+ result.items[i].volumeInfo.imageLinks.thumbnail +' alt="">' +
+									  '</div>' +
+									  '<div class="book-desc">' +
+										  '<h5>' + result.items[i].volumeInfo.title + '</h5>' +
+										  '<span>' + result.items[i].volumeInfo.authors + '</span>' +
+										  '<p>' +  jQuery.trim(result.items[i].volumeInfo.description).substring(0, 50) + '</p>' +
+									   '</div>' +
+									   '</div>' +
+									  '</div>';
+								
+								$('#result').append(data);
+							   }
+							}			
+                     }).fail(function(error) {
+						console.log(error);
+					})
+		}
+      </script>
+   </head>
+   <body>
+      <!-- HEADER START -->
+      <header>
+         <div class="header">
+            <nav class="navbar sticky-top navbar-expand-lg bg-dark">
+               <div class="container">
+                  <a class="navbar-brand" href="#">Kvothe's Books</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <a class="hamburger" href="#">&#9776;</a>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="navbar-nav mr-auto w-100 justify-content-end">
+                        <li class="nav-item active">
+                           <a class="nav-link" href="#">News</a>
+                        </li>
+                        <li class="nav-item active">
+                           <a class="nav-link" href="#">Books</a>
+                        </li>
+                        <li class="nav-item active">
+                           <a class="nav-link" href="#">Events</a>
+                        </li>
+                        <li class="nav-item active">
+                           <a class="nav-link" href="#">About</a>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </nav>
+         </div>
+      </header>
+      <!-- HEADER END -->
+      <!-- CONTAINER START -->
+      <section>
+         <div class="hero-section">
+            <div class="container">
+               <div class="hero-box">
+                  <h1>You haven't read anything yet.</h1>
+                  <p>They say outside of a dog. a book is man's best friend (inside of a dog it's too dark to read). Come in, chat width
+                     us, share your favorite books & films and we'll introduce you to some of the greatest friends you'll ever know.
+                  </p>
+                  <div class="hero-btn">
+                     <a href="#"> Come visit us!</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="page-content">
+         <div class="search-bar">
+            <div class="container">
+               <div class="col-md-12 search-field">
+                  <div class="row">
+                     <div class="col-md-3">
+                     </div>
+                     <div class="col-md-6">
+                        <div class="input-group">
+                           <input type="search" class="form-control" id="books" placeholder="Find a book!">
+                           <div class="input-group-append">
+                              <button class="btn btn-success" type="button">
+                              Search
+                              </button>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="book-list">
+            <div class="container">
+               <div class="row" id="result">
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- CONTAINER END -->
+      <!-- FOOTER START -->
+      <footer>
+         <div class="footer">
+            <div class="container">
+               <p>2021 Created by Kvothe's Books</p>
+            </div>
+         </div>
+      </footer>
+      <!-- FOOTER END -->
+   </body>
+</html>
